@@ -52,7 +52,7 @@ public class UTCSUsername
 		}
 		if (enhance) {
 			System.out.println(YELLOW + "\nENHANCING CACHE" + RESET);
-			enhanceCache();
+			enhanceCache(20);
 			none = false;
 		}
 		if (none) {
