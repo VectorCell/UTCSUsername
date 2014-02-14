@@ -58,40 +58,38 @@ public class UTCSUsername
 		if (none) {
 			buildCache();
 			String[] usernames = getUsers();
+			System.out.println(YELLOW + "Currently logged-on users:" + RESET);
 			printUsers(usernames);
 		}
 	}
 
 	private static void testMode() throws FileNotFoundException
 	{
-		/*
-		int num = 0;
-		for (String username : cache.keySet()) {
-			System.out.printf("%5d : ", (++num));
-			Account acct = cache.get(username);
-			int lineNum = 0;
-			for (String line : acct.toString().split("\n")) {
-				if (lineNum == 0)
-					System.out.print(CYAN);
-				else
-					System.out.print(RESET);
-				String prefix = ++lineNum == 1 ? "" : "\t";
-				System.out.println(prefix + line);
-			}
-			System.out.println();
-		}
-		*/
 		printUsernames(getAllUsers());
 	}
 
 	private static void buildCache() throws FileNotFoundException
 	{
+		System.out.println(RED + "Building cache ..." + RESET);
+		String oldMessage = "";
+		String newMessage = "";
+		String backspaces = "";
+		int filenum = 0;
 		File folder = new File("./cache/");
 		if (folder.exists()) {
 			File[] listOfFiles = folder.listFiles();
 			for (File file : listOfFiles) {
 				String name = file.getName();
 				if (name.endsWith(".cache")) {
+					newMessage = (++filenum) + " / " + listOfFiles.length + " ";
+					newMessage += (filenum * 100) / listOfFiles.length + "% ";
+					backspaces = "";
+					for (int k = 0; k < oldMessage.length(); k++) {
+						backspaces += "\b";
+					}
+					System.out.print(backspaces + RED + newMessage + RESET);
+					oldMessage = newMessage;
+
 					String username = name.split("\\.")[0];
 					Scanner reader = new Scanner(file);
 					Account acct = new Account();
@@ -107,6 +105,7 @@ public class UTCSUsername
 		} else {
 			exec("mkdir cache");
 		}
+		System.out.println();
 	}
 
 	private static void enhanceCache() throws FileNotFoundException
@@ -155,6 +154,7 @@ public class UTCSUsername
 
 	private static String[] getUsers()
 	{
+		System.out.println(RED + "Fetching usernames ..." + RESET);
 		String[] usernames = getConnectedUsers();
 		return usernames;
 	}
